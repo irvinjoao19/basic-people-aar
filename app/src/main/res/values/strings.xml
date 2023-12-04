@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">BasicSuperApp</string>
+    <string name="title_login">login</string>
+    <string name="title_logindata">logindata</string>
+    <string name="title_logindomain">logindomain</string>
+    <string name="title_loginpresentation">loginpresentation</string>
+    <string name="title_presentation">presentation</string>
+    <string name="title_domain">domain</string>
+    <string name="title_data">data</string>
+    <string name="title_people">Hola people</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.PeopleFragment">
+
+    <include
+        android:id="@+id/i_shimmer_people_list"
+        layout="@layout/shimmer_people_list" />
+
+    <include
+        android:id="@+id/i_content_people"
+        layout="@layout/content_people" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
