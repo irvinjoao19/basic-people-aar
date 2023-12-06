@@ -1,54 +1,42 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    kotlin("kapt")
-    id("com.google.dagger.hilt.android")
     id("androidx.navigation.safeargs")
     id("kotlin-parcelize")
     id("maven-publish")
 }
 
+val publishArtifact = artifacts.add("default", file("libs/presentation-release.aar"))
 
-configurations.maybeCreate("default")
-val publishArtifact = artifacts.add("default", file("people-presentation-2.1.1.aar"))
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("presentation-aar") {
+                groupId = "com.bcp.sdk.product"
+                artifactId = "peoplecompose.presentation"
+                version = "1.1.1"
+                artifact(publishArtifact)
+//                from(components["java"])
 
-publishing {
-    publications {
-        create<MavenPublication>("aar") {
-            groupId = "com.bcp.sdk.product"
-            artifactId = "peoplecompose.presentation"
-            version = "1.0.0"
-            artifact(publishArtifact)
+                pom.withXml {
+
+                    val dependenciesNode = asNode().appendNode("dependencies")
+                    configurations["implementation"].allDependencies.forEach { dependency ->
+                        dependency.group?.let { group ->
+                            if (group.startsWith("androidx") || group.startsWith("android.arch.navigation")) {
+                                val dependencyNode = dependenciesNode.appendNode("dependency")
+                                dependencyNode.appendNode("groupId", dependency.group)
+                                dependencyNode.appendNode("artifactId", dependency.name)
+                                dependencyNode.appendNode("version", dependency.version)
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
-//
-//afterEvaluate {
-//    publishing {
-//        publications {
-//            // Creates a Maven publication called "release".
-//            release(MavenPublication) {
-//                // Applies the component for the release build variant.
-//                from components.release
-//
-//                        // You can then customize attributes of the publication as shown below.
-//                        groupId = 'com.example.MyLibrary'
-//                artifactId = 'final'
-//                version = '1.0'
-//            }
-//            // Creates a Maven publication called “debug”.
-//            debug(MavenPublication) {
-//                // Applies the component for the debug build variant.
-//                from components.debug
-//
-//                        groupId = 'com.example.MyLibrary'
-//                artifactId = 'final-debug'
-//                version = '1.0'
-//            }
-//        }
-//    }
-//}
 
 android {
     namespace = "com.bcp.sdk.product.peoplecompose.presentation"
@@ -83,11 +71,8 @@ android {
     }
 }
 
-kapt {
-    correctErrorTypes = true
-}
-
 dependencies {
+    implementation(project(":peoplecompose:data"))
     implementation(project(":peoplecompose:domain"))
 
     implementation("androidx.core:core-ktx:1.12.0")
@@ -104,15 +89,4 @@ dependencies {
     // Navigation Component
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
-
-    //ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-
-    //Dagger Hilt
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
-
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }

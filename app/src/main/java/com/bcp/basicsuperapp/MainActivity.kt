@@ -5,9 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bcp.basicsuperapp.databinding.ActivityMainBinding
 import com.bcp.sdk.product.peoplecompose.presentation.ui.activities.PeopleActivity
-import dagger.hilt.android.AndroidEntryPoint
-
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val binding: ActivityMainBinding by lazy {

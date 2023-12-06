@@ -1,21 +1,17 @@
 package com.bcp.sdk.product.peoplecompose.data.repository
 
-import com.bcp.sdk.product.peoplecompose.data.api.ApiService
+import com.bcp.sdk.product.peoplecompose.data.di.NetworkModule.apiService
+import com.bcp.sdk.product.peoplecompose.data.di.NetworkModule.gson
 import com.bcp.sdk.product.peoplecompose.data.mapper.toDomain
 import com.bcp.sdk.product.peoplecompose.data.model.PeopleDataDTO
 import com.bcp.sdk.product.peoplecompose.data.model.PeopleListDTO
 import com.bcp.sdk.product.peoplecompose.domain.model.PeopleData
 import com.bcp.sdk.product.peoplecompose.domain.model.PeopleList
 import com.bcp.sdk.product.peoplecompose.domain.repository.PeopleRepository
-import com.google.gson.Gson
 import retrofit2.HttpException
-import javax.inject.Inject
 
-class PeopleRepositoryImpl @Inject constructor(
-    private val apiService: ApiService,
-    private val gson: Gson
-) :
-    PeopleRepository {
+class PeopleRepositoryImpl : PeopleRepository {
+
     override suspend fun getPeople(): Result<PeopleList> {
         return try {
             val result = apiService.getPeople()

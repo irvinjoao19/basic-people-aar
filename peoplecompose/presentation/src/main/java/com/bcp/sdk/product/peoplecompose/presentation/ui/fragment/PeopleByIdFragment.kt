@@ -1,26 +1,26 @@
 package com.bcp.sdk.product.peoplecompose.presentation.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import com.bcp.sdk.product.peoplecompose.data.repository.PeopleRepositoryImpl
+import com.bcp.sdk.product.peoplecompose.domain.usecase.PeopleByIdUseCase
 import com.bcp.sdk.product.peoplecompose.presentation.R
 import com.bcp.sdk.product.peoplecompose.presentation.databinding.FragmentPeopleByIdBinding
 import com.bcp.sdk.product.peoplecompose.presentation.model.PeoplePresentation
 import com.bcp.sdk.product.peoplecompose.presentation.state.PeopleByIdViewState
+import com.bcp.sdk.product.peoplecompose.presentation.util.getViewModel
 import com.bcp.sdk.product.peoplecompose.presentation.viewmodel.PeopleByIdViewModel
 import com.squareup.picasso.Picasso
-import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
 class PeopleByIdFragment : Fragment() {
 
     private val binding: FragmentPeopleByIdBinding by lazy {
@@ -28,7 +28,15 @@ class PeopleByIdFragment : Fragment() {
     }
     private var id: Int = 0
 
-    private val peopleByIdViewModel: PeopleByIdViewModel by viewModels()
+    private val peopleByIdViewModel: PeopleByIdViewModel by lazy {
+        getViewModel {
+            PeopleByIdViewModel(
+                peopleByIdUseCase = PeopleByIdUseCase(
+                    peopleRepository = PeopleRepositoryImpl()
+                )
+            )
+        }
+    }
     private val args: PeopleByIdFragmentArgs by navArgs()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

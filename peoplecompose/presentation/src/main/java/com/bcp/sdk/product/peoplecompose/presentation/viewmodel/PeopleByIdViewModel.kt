@@ -5,16 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.bcp.sdk.product.peoplecompose.domain.usecase.PeopleByIdUseCase
 import com.bcp.sdk.product.peoplecompose.presentation.mapper.toPresentation
 import com.bcp.sdk.product.peoplecompose.presentation.state.PeopleByIdViewState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
-
-@HiltViewModel
-class PeopleByIdViewModel @Inject
-constructor(
+class PeopleByIdViewModel(
     private val peopleByIdUseCase: PeopleByIdUseCase,
 ) : ViewModel() {
 

@@ -1,24 +1,24 @@
 package com.bcp.sdk.product.peoplecompose.presentation.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.bcp.sdk.product.peoplecompose.data.repository.PeopleRepositoryImpl
+import com.bcp.sdk.product.peoplecompose.domain.usecase.PeopleUseCase
 import com.bcp.sdk.product.peoplecompose.presentation.databinding.FragmentPeopleBinding
-import com.bcp.sdk.product.peoplecompose.presentation.ui.adapter.PeopleAdapter
 import com.bcp.sdk.product.peoplecompose.presentation.model.PeoplePresentation
 import com.bcp.sdk.product.peoplecompose.presentation.state.PeopleViewState
+import com.bcp.sdk.product.peoplecompose.presentation.ui.adapter.PeopleAdapter
+import com.bcp.sdk.product.peoplecompose.presentation.util.getViewModel
 import com.bcp.sdk.product.peoplecompose.presentation.viewmodel.PeopleViewModel
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
 class PeopleFragment : Fragment() {
 
     private val binding: FragmentPeopleBinding by lazy {
@@ -32,7 +32,16 @@ class PeopleFragment : Fragment() {
         findNavController().navigate(action)
 
     })
-    private val peopleViewModel: PeopleViewModel by viewModels()
+
+    private val peopleViewModel: PeopleViewModel by lazy {
+        getViewModel {
+            PeopleViewModel(
+                peopleUseCase = PeopleUseCase(
+                    peopleRepository = PeopleRepositoryImpl()
+                )
+            )
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
